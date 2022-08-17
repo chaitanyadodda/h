@@ -1,0 +1,28 @@
+#creating security group 
+resource "aws_security_group" "ec2-security-grp" {
+  name        = "ec2-security-grp"
+  description = "Allow TLS inbound traffic"
+  vpc_id      = aws_vpc.vpc.id
+
+  ingress {
+    description      = "TLS from VPC"
+    from_port        = 0    #mention port 443 if traffic needs to tram=nsmit from 443 port
+    to_port          = 0
+    protocol         = "-1"
+    #cidr_blocks      = [aws_vpc.vpc.cidr_block]  # allow traffic from specific IP range
+     cidr_blocks      = ["0.0.0.0/0"]   # allows traffic from all Ips
+   # ipv6_cidr_blocks = [aws_vpc.vpcid.ipv6_cidr_block]
+  }
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+   # ipv6_cidr_blocks = ["::/0"]
+  }
+
+  tags = {
+    Name = "allow_tls"
+  }
+}
